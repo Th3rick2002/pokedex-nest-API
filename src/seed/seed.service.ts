@@ -1,10 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { PokemonListResponse } from './interfaces/pokeResponse.interface';
 import axios, { AxiosInstance } from 'axios';
+import { PokemonService } from '../pokemon/pokemon.service';
 
 @Injectable()
 export class SeedService {
   private readonly axios: AxiosInstance = axios;
+
+  constructor(private readonly pokemonService: PokemonService) {}
 
   async executeSeed() {
     const { data } = await this.axios.get<PokemonListResponse>(
@@ -15,7 +18,7 @@ export class SeedService {
       const segments = url.split('/');
       const no: number = +segments[segments.length - 2]
 
-      console.log({ name, no});
+      await this.pokemonService.create({ name, no })
     })
     return data.results;
   }
