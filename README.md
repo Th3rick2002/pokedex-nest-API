@@ -18,3 +18,4 @@
 3. Tener Nest CLI instalado `pnpm i -g @nestjs/cli`
 4. Levantar MongoDB `docker-compose up -d`
 5. Ejecutar `pnpm start:dev`
+6. Ejecutar Seed `http:localhost:300/api/seed/insert`

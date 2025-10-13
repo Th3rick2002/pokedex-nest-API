@@ -5,8 +5,13 @@ import { SeedService } from './seed.service';
 export class SeedController {
   constructor(private readonly seedService: SeedService) {}
 
-  @Get()
+  @Get('/insert')
   executeSeed() {
     return this.seedService.executeSeed();
+  }
+
+  @Get('/delete')
+  deleteSeed() {
+    return this.seedService.clearDatabase();
   }
 }
