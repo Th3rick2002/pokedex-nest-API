@@ -33,7 +33,25 @@ export class PokemonService {
     }
   }
 
-  findAll() {
+  async createMany(createPokemonDto: CreatePokemonDto[]) {
+    createPokemonDto.map((pokemon) => {
+      pokemon.name = pokemon.name.toLowerCase();
+    })
+
+    try {
+      const pokemon = await this.pokemonModel.insertMany(createPokemonDto);
+      return pokemon;
+    } catch (error) {
+      if (error.code === 11000) {
+        throw new BadRequestException('Pokemon already exists');
+      }
+      throw new InternalServerErrorException(
+        `Can't create pokemon - check server logs`,
+      );
+    }
+  }
+
+  async findAll() {
     return this.pokemonModel.find()
   }
 
@@ -82,6 +100,10 @@ export class PokemonService {
     if (deletedCount === 0) throw new NotFoundException(`Pokemon with ${id} not found`)
 
     return
+  }
+
+  async deleteAll() {
+    await this.pokemonModel.deleteMany({})
   }
 
   private handleExcetions(error: any){
