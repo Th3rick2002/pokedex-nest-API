@@ -53,6 +53,9 @@ export class PokemonService {
 
   async findAll() {
     return this.pokemonModel.find()
+      .limit(5)
+      .skip(5)
+      .sort({ no: 1 })
   }
 
   async findOne(term: string) {
