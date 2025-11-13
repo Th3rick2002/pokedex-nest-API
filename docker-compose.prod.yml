@@ -1,0 +1,46 @@
+services:
+  mongodb:
+    image: mongo:5
+    container_name: mongo_poke
+    restart: always
+    environment:
+      MONGO_INITDB_DATABASE: 'nest-pokemon'
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - database-network
+    healthcheck:
+      test: [ "CMD-SHELL", "mongosh", "--eval", "db.adminCommand('ping')" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: pokedex-api-nest:latest
+    container_name: pokedex_api
+    environment:
+      NODE_ENV: production
+      MONGODB_URI: ${MONGODB_URI}
+      PORT: ${PORT}
+      DEFAULT_LIMIT: ${DEFAULT_LIMIT}
+    ports:
+      - "127.0.0.1:${PORT}:${PORT}"
+    networks:
+      - database-network
+      - backend-network
+
+volumes:
+   mongo_data:
+      driver: local
+
+networks:
+  database-network:
+    driver: bridge
+  backend-network:
+    driver: bridge
