@@ -22,7 +22,7 @@ import { EnvConfig } from './config/app.config';
       inject: [ConfigService],
       useFactory: (ConfigService: ConfigService) => ({
         dbName: 'pokemondb',
-        uri: ConfigService.get('MONGODB_URI'),
+        uri: ConfigService.get<string>('MONGODB_URI'),
       }),
     }),
     PokemonModule,
