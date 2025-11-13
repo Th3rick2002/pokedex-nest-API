@@ -21,3 +21,9 @@
 6. Llenar las variables de entorno de `.env`
 7. Ejecutar `pnpm start:dev`
 8. Ejecutar Seed `http:localhost:3200/api/seed/insert`
+
+# Ejecutar en producción
+1. Clonar el repositorio
+2. Copiar el archivo `.env.template` y renombrar la copia `.env.prod`
+3. Llenar las variables de entorno de `.env.prod`
+4. Ejecutar `docker-compose -f docker-compose.prod.yml --env-file .env.prod up --build -d`
